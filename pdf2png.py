@@ -35,13 +35,17 @@ def pdf_to_png(pdf_path, page_range_str):
 	print(f"変換対象ファイル: {pdf_path}")
 	print(f"変換対象ページ: {target_pages}")
 
+	# ファイル名
+	basename_without_ext = os.path.splitext(os.path.basename(pdf_path))[0]
+
 	# 指定ページのみ保存
 	for page_num in target_pages:
 		if 1 <= page_num <= len(pages):
 			page = pages.load_page(page_num - 1)
 			# グレースケールでpixmapを作成
-			pix = page.get_pixmap(colorspace=fitz.csGRAY)
-			output_path = os.path.join(output_dir, f"page_{page_num}.png")
+#			pix = page.get_pixmap(colorspace=fitz.csGRAY)
+			pix = page.get_pixmap()
+			output_path = os.path.join(output_dir, f"{basename_without_ext}_{page_num:03}.png")
 			pix.save(output_path)
 			print(f"Saved: {output_path}")
 		else:
